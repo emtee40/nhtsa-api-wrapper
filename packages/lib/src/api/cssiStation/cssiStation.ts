@@ -732,8 +732,24 @@ export type CSSIResultsData = {
 }
 
 /**
+ * Types the `Results[]` of the `CSSIStation API` via `Pick` for better end user experience.
+ */
+export type CSSIPickResults<T extends 'default'> =
+  /* Pick<> ProductsResultsData based on Variant string */
+  T extends 'default'
+    ? /* Path /vehicle/models - all properties defined */
+      {
+        [K in keyof CSSIResultsData]-?: CSSIResultsData[K]
+      }
+    : /* fallback default value - all optional properties */
+      CSSIResultsData
+
+/**
  * Types the return of the `products()` function.
  *
  * The `Results[]` will be typed as `CSSIResultsData`
  */
-export type CSSIResponse = NhtsaResponse<CSSIResultsData, 'cssiStation'>
+export type CSSIResponse = NhtsaResponse<
+  CSSIPickResults<'default'>,
+  'cssiStation'
+>
